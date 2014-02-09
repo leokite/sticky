@@ -16,12 +16,12 @@ angular.module('stickyApp')
         socket.on('moveSticky', function(stickies) {
           for (var i = stickies.length; i--; ) {
             if ($scope.sticky.id === stickies[i].id) {
+              $(element).animate({
+                left: stickies[i].left,
+                top: stickies[i].top
+              }, 500);
               $scope.sticky.left = stickies[i].left;
               $scope.sticky.top = stickies[i].top;
-              $(element).animate({
-                left: $scope.sticky.left,
-                top: $scope.sticky.top
-              }, 500);
               break;
             }
           }

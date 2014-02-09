@@ -12,8 +12,8 @@ var Sticky = (function() {
   return Sticky;
 })();
 
-angular.module('stickyApp', ['socket', 'util', 'ngProgress', 'ngAnimate'])
-  .controller('stickyCtrl', ['$scope', 'socket', 'util', 'ngProgress', function($scope, socket, util, ngProgress) {
+angular.module('stickyApp', ['socket', 'util', 'ngAnimate'])
+  .controller('stickyCtrl', ['$scope', 'socket', 'util', function($scope, socket, util) {
     $scope.stickies = [];
 
     /*jshint unused: vars */
@@ -46,7 +46,6 @@ angular.module('stickyApp', ['socket', 'util', 'ngProgress', 'ngAnimate'])
     };
 
     socket.on('connect', function(data) {
-      ngProgress.start();
       var path = location.pathname;
       socket.emit('joinRoom', path);
     });
@@ -56,12 +55,11 @@ angular.module('stickyApp', ['socket', 'util', 'ngProgress', 'ngAnimate'])
     });
 
     socket.on('initSticky', function(stickies) {
-      for (var i = 0; i < stickies; i++) {
+      for (var i in stickies) {
         $scope.stickies.push(
           new Sticky(
             stickies[i].id, stickies[i].left, stickies[i].top, stickies[i].text, stickies[i].color));
       }
-      ngProgress.complete();
     });
 
     socket.on('createSticky', function(sticky) {
@@ -96,4 +94,18 @@ angular.module('stickyApp', ['socket', 'util', 'ngProgress', 'ngAnimate'])
         }
       }
     });
+
+    // socket.on('moveSticky', function(stickies) {
+      // for (var i = stickies.length; i--; ) {
+        // if ($scope.sticky.id === stickies[i].id) {
+          // $(element).animate({
+            // left: stickies[i].left,
+            // top: stickies[i].top
+          // }, 500);
+          // $scope.sticky.left = stickies[i].left;
+          // $scope.sticky.top = stickies[i].top;
+          // break;
+        // }
+      // }
+    // });
   }]);

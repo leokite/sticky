@@ -1,8 +1,3 @@
-body {
-  margin: 0;
-  padding: 0;
-}
-
 .sticky {
   position: absolute;
   width: 230px;
@@ -75,7 +70,6 @@ body {
   position: absolute;
   width: 100%;
   height: 100%;
-  /* background-color: lightblue; */
   z-index: -100;
 }
 
@@ -94,4 +88,3 @@ body {
 .buttons:hover {
   opacity: .6;
 }
-

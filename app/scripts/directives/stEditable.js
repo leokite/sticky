@@ -5,7 +5,8 @@ angular.module('stickyApp')
     // jshint unused: vars
       link: function($scope, element, attrs) {
         $(element).bind('dblclick', function() {
-          $(this).wrapInner('<textarea class="content"></textarea>').find('textarea').focus().select().blur(function() {
+          var text = $scope.sticky.text;
+          $(this).wrapInner('<textarea class="content">' + text + '</textarea>').find('textarea').focus().select().blur(function() {
             $(this).parent().append($(this).children());
             $('textarea').remove();
             $scope.sticky.text = $(this).val();
