@@ -4,10 +4,10 @@ angular.module('stickyApp')
     return {
     // jshint unused: vars
       link: function($scope, element, attrs) {
-        $(element).animate({
-          left: $scope.sticky.left,
-          top: $scope.sticky.top
-        }, 500);
+        // $(element).animate({
+          // left: $scope.sticky.left,
+          // top: $scope.sticky.top
+        // }, 500);
 
         $(element).draggable({
           stack: ".sticky"

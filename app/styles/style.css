@@ -7,11 +7,23 @@
   -moz-box-shadow: 0 10px 6px -6px #777;
 }
 
+.sticky.ng-enter {
+  -webkit-transition: 1s ease;
+     -moz-transition: 1s ease;
+       -o-transition: 1s ease;
+          transition: 1s ease;
+          opacity: 0;
+}
+
+.sticky.ng-enter-active {
+  opacity:1;
+}
+
 .sticky.ng-leave {
-  -webkit-transition: 0.5s ease-in-out;
-     -moz-transition: 0.5s ease-in-out;
-       -o-transition: 0.5s ease-in-out;
-          transition: 0.5s ease-in-out;
+  -webkit-transition: 0.5s ease;
+     -moz-transition: 0.5s ease;
+       -o-transition: 0.5s ease;
+          transition: 0.5s ease;
 }
 
 .sticky.ng-leave-active {
