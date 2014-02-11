@@ -8,10 +8,10 @@
 }
 
 .sticky.ng-enter {
-  -webkit-transition: 1s ease;
-     -moz-transition: 1s ease;
-       -o-transition: 1s ease;
-          transition: 1s ease;
+  -webkit-transition: 0.5s ease;
+     -moz-transition: 0.5s ease;
+       -o-transition: 0.5s ease;
+          transition: 0.5s ease;
           opacity: 0;
 }
 
@@ -34,8 +34,8 @@
   overflow: hidden;
   font-size: 15px;
   position: absolute;
-  width: 85%;
-  height: 80%;
+  width: 90%;
+  height: 90%;
   top: 5%;
   left: 5%;
   background-color: transparent;
@@ -83,10 +83,6 @@
   width: 100%;
   height: 100%;
   z-index: -100;
-}
-
-#add-button {
-  position: fixed;
 }
 
 .ui-selecting, .ui-selected {
