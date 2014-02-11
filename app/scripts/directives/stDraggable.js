@@ -10,20 +10,6 @@ angular.module('stickyApp')
           containment: [0, 55, 2000, 2000]
         });
 
-        socket.on('moveSticky', function(stickies) {
-          for (var i = stickies.length; i--; ) {
-            if ($scope.sticky.id === stickies[i].id) {
-              $(element).animate({
-                left: stickies[i].left,
-                top: stickies[i].top
-              }, 500);
-              $scope.sticky.left = stickies[i].left;
-              $scope.sticky.top = stickies[i].top;
-              break;
-            }
-          }
-        });
-
         $(element).bind('dragstop', function(event, ui) {
           var stickies = [];
           var isMultipleSelect = false;
@@ -58,6 +44,26 @@ angular.module('stickyApp')
               left: (ui.position.left) + $(this).data('apos').left
             });
           });
+        });
+
+        function delaySetPositionForChrome(left, top) {
+          return function() {
+            $scope.sticky.left = left;
+            $scope.sticky.top = top;
+            $scope.$apply();
+          };
+        }
+
+        socket.on('moveSticky', function(stickies) {
+          for (var i = stickies.length; i--; ) {
+            if ($scope.sticky.id === stickies[i].id) {
+              $(element).animate({
+                left: stickies[i].left,
+                top: stickies[i].top
+              }, 500, null, delaySetPositionForChrome(stickies[i].left, stickies[i].top));
+              break;
+            }
+          }
         });
       }
     };
