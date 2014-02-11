@@ -4,7 +4,6 @@ public
 .sass-cache
 app/bower_components
 heroku
-views
 .DS_Store
 tags
 dump.rdb
