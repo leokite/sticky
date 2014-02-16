@@ -1,30 +1,12 @@
 'use strict';
 
-var Sticky = (function() {
-  function Sticky(id, left, top, text, color) {
-    this.id = id;
-    this.left = left;
-    this.top = top;
-    this.text = text;
-    this.color = color;
-    this.showButton = false;
-  }
-  return Sticky;
-})();
-
 angular.module('stickyApp', ['socket', 'util', 'ngAnimate'])
-  .controller('stickyCtrl', ['$scope', 'socket', 'util', function($scope, socket, util) {
+  .controller('stickyCtrl', ['$scope', 'socket', function($scope, socket) {
     $scope.stickies = [];
 
-    /*jshint unused: vars */
-    $scope.addSticky = function($event) {
-      var id = util.generateId('sticky');
-      var left = $('#add-button').offset().left + 40 + Math.round((Math.random() * 100));
-      var top = $('#add-button').offset().top + 40 + Math.round((Math.random() * 100));
-      var sticky = new Sticky(id, left, top, 'Double Click to Edit', '#FFFF99');
-
+    $scope.addSticky = function() {
+      var sticky = {id: '', left: 0, top: 0, text: '', color: '', showButton: false, init: true};
       $scope.stickies.push(sticky);
-      socket.emit('createSticky', sticky);
     };
 
     $scope.removeSticky = function(sticky) {
@@ -45,7 +27,7 @@ angular.module('stickyApp', ['socket', 'util', 'ngAnimate'])
       return  sticky.showButton;
     };
 
-    socket.on('connect', function(data) {
+    socket.on('connect', function() {
       var path = location.pathname;
       socket.emit('joinRoom', path);
     });
@@ -57,15 +39,15 @@ angular.module('stickyApp', ['socket', 'util', 'ngAnimate'])
     socket.on('initSticky', function(stickies) {
       for (var i in stickies) {
         $scope.stickies.push(
-          new Sticky(
-            stickies[i].id, stickies[i].left, stickies[i].top, stickies[i].text, stickies[i].color));
+          {'id': stickies[i].id, 'left': stickies[i].left, 'top': stickies[i].top,
+            'text': stickies[i].text, 'color': stickies[i].color, 'init': stickies[i].init});
       }
     });
 
     socket.on('createSticky', function(sticky) {
       $scope.stickies.push(
-        new Sticky(
-          sticky.id, sticky.left, sticky.top, sticky.text, sticky.color));
+        {'id': sticky.id, 'left': sticky.left, 'top': sticky.top,
+          'text': sticky.text, 'color': sticky.color, init: sticky.init});
     });
 
     socket.on('removeSticky', function(id) {
@@ -94,18 +76,4 @@ angular.module('stickyApp', ['socket', 'util', 'ngAnimate'])
         }
       }
     });
-
-    // socket.on('moveSticky', function(stickies) {
-      // for (var i = stickies.length; i--; ) {
-        // if ($scope.sticky.id === stickies[i].id) {
-          // $(element).animate({
-            // left: stickies[i].left,
-            // top: stickies[i].top
-          // }, 500);
-          // $scope.sticky.left = stickies[i].left;
-          // $scope.sticky.top = stickies[i].top;
-          // break;
-        // }
-      // }
-    // });
   }]);

@@ -1,6 +1,6 @@
 <!doctype html>
 <html>
-  <head>
+  <head lang="en">
     <link rel="stylesheet" href="styles/main.css"/>
     <link rel="stylesheet" href="bower_components/jquery-ui/themes/ui-lightness/jquery-ui.min.css"/>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
@@ -19,9 +19,8 @@
     <script src="scripts/services/socket.js"></script>
     <script src="scripts/services/util.js"></script>
     <script src="scripts/controllers/stickyCtrl.js"></script>
-    <script src="scripts/directives/stDraggable.js"></script>
-    <script src="scripts/directives/stEditable.js"></script>
-    <script src="scripts/directives/stSelectable.js"></script>
+    <script src="scripts/directives/stSticky.js"></script>
+    <script src="scripts/directives/stBoard.js"></script>
   </head>
   <body>
     <div ng-app="stickyApp" ng-controller="stickyCtrl">
@@ -49,14 +48,15 @@
           </form>
         </div>
       </nav>
-      <div id="board" st-selectable >
-        <div id={{sticky.id}} class="sticky" ng-repeat="sticky in stickies | filter:{text:search}" ng-style="{'background-color':sticky.color, 'left':sticky.left + px, 'top':sticky.top + px}" ng-mouseenter="hover(sticky)" ng-mouseleave="hover(sticky)" st-draggable st-editable ng-cloak>
+      <div id="board" st-board >
+        <div id={{sticky.id}} class="sticky" ng-repeat="sticky in stickies | filter: {text:search}" ng-style="{'background-color':sticky.color, 'left':sticky.left + px, 'top':sticky.top + px}" ng-mouseenter="hover(sticky)" ng-mouseleave="hover(sticky)" st-sticky ng-cloak>
           <input type="image" class="sticky-remove" src="images/remove.png" ng-click="removeSticky(sticky)" ng-show="sticky.showButton" />
           <input type="image" class="sticky-color-green" src="images/sticker-green.png" ng-click="changeColor(sticky, '#98FB98')" ng-show="sticky.showButton"/>
           <input type="image" class="sticky-color-yellow" src="images/sticker-yellow.png"ng-click="changeColor(sticky, '#FFFF99')" ng-show="sticky.showButton"/>
           <input type="image" class="sticky-color-pink" src="images/sticker-pink.png" ng-click="changeColor(sticky, '#FFCCFF')" ng-show="sticky.showButton"/>
           <div class="content" ng-bind="sticky.text"></div>
         </div>
+
         <!-- debug info from -->
         <div style="position:absolute; bottom:0; font-size:15px;" ng-bind="stickies|json"></div>
         <!-- debug info to -->

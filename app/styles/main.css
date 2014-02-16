@@ -8,10 +8,10 @@
 }
 
 .sticky.ng-enter {
-  -webkit-transition: 0.5s ease;
-     -moz-transition: 0.5s ease;
-       -o-transition: 0.5s ease;
-          transition: 0.5s ease;
+  -webkit-transition: 1s ease;
+     -moz-transition: 1s ease;
+       -o-transition: 1s ease;
+          transition: 1s ease;
           opacity: 0;
 }
 
