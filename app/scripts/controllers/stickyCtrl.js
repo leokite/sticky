@@ -14,7 +14,7 @@ angular.module('stickyApp', ['socket', 'util', 'ngAnimate'])
         showButton: false
       };
       $scope.stickies.push(sticky);
-      socket.emit('createSticky', sticky);
+      socket.emit('addSticky', sticky);
     };
 
     $scope.removeSticky = function(sticky) {
@@ -71,6 +71,14 @@ angular.module('stickyApp', ['socket', 'util', 'ngAnimate'])
       return  sticky.showButton;
     };
 
+    $scope.bind = function() {
+      for (var i = $scope.stickies.length; i--; ) {
+        $scope.stickies[i].left = 200;
+        $scope.stickies[i].top = 200;
+      }
+      socket.emit('moveSticky', $scope.stickies);
+    };
+
     socket.on('connect', function() {
       var path = location.pathname;
       socket.emit('joinRoom', path);
@@ -88,7 +96,7 @@ angular.module('stickyApp', ['socket', 'util', 'ngAnimate'])
       }
     });
 
-    socket.on('createSticky', function(sticky) {
+    socket.on('addSticky', function(sticky) {
       $scope.stickies.push(
         {'id': sticky.id, 'left': sticky.left, 'top': sticky.top,
           'text': sticky.text, 'color': sticky.color, init: sticky.init});
