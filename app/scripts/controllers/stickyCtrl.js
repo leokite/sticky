@@ -1,12 +1,20 @@
 'use strict';
 
 angular.module('stickyApp', ['socket', 'util', 'ngAnimate'])
-  .controller('stickyCtrl', ['$scope', 'socket', function($scope, socket) {
+  .controller('stickyCtrl', ['$scope', 'socket', 'util', function($scope, socket, util) {
     $scope.stickies = [];
 
     $scope.addSticky = function() {
-      var sticky = {id: '', left: 0, top: 0, text: '', color: '', showButton: false, init: true};
+      var sticky = {
+        id: util.generateId('sticky'),
+        left: Math.round((Math.random() * 150)),
+        top: 40 + Math.round((Math.random() * 150)),
+        text: 'Double Click to Edit',
+        color: 'yellowBackground',
+        showButton: false
+      };
       $scope.stickies.push(sticky);
+      socket.emit('createSticky', sticky);
     };
 
     $scope.removeSticky = function(sticky) {
@@ -16,10 +24,46 @@ angular.module('stickyApp', ['socket', 'util', 'ngAnimate'])
       socket.emit('removeSticky', id);
     };
 
-    $scope.changeColor = function(sticky, color) {
+    $scope.changeColorGreen = function(sticky) {
       var index = $scope.stickies.indexOf(sticky);
+      var color = 'greenBackground';
       $scope.stickies[index].color = color;
       socket.emit('changeColor', {'id': $scope.stickies[index].id, 'color': color});
+    };
+
+    $scope.changeColorYellow = function(sticky) {
+      var index = $scope.stickies.indexOf(sticky);
+      var color = 'yellowBackground';
+      $scope.stickies[index].color = color;
+      socket.emit('changeColor', {'id': $scope.stickies[index].id, 'color': color});
+    };
+
+    $scope.changeColorPink = function(sticky) {
+      var index = $scope.stickies.indexOf(sticky);
+      var color = 'pinkBackground';
+      $scope.stickies[index].color = color;
+      socket.emit('changeColor', {'id': $scope.stickies[index].id, 'color': color});
+    };
+
+    $scope.setText = function(sticky, text) {
+      var index = $scope.stickies.indexOf(sticky);
+      $scope.stickies[index].text = text;
+      $scope.stickies[index].showButton = false; // for Firefox
+      $scope.$apply();
+      socket.emit('editSticky', {'id': $scope.stickies[index].id, 'text': $scope.stickies[index].text});
+    };
+
+    $scope.setPositions = function(stickies) {
+      for (var i = stickies.length; i--; ) {
+        for (var j = $scope.stickies.length; j--; ) {
+          if (stickies[i].id === $scope.stickies[j].id) {
+            $scope.stickies[j].left = stickies[i].left;
+            $scope.stickies[j].top = stickies[i].top;
+          }
+        }
+      }
+      $scope.$apply();
+      socket.emit('moveSticky', stickies);
     };
 
     $scope.hover = function(sticky) {

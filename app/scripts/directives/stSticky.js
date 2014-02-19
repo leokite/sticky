@@ -1,40 +1,13 @@
 'use strict';
 angular.module('stickyApp')
-  .directive('stSticky', ['socket', 'util', function(socket, util) {
+  .directive('stSticky', ['socket', function(socket) {
     return {
       // jshint unused: vars
       link: function(scope, element, attrs) {
-        if (scope.sticky.init === true) {
-          scope.sticky.id  = util.generateId('sticky');
-          scope.sticky.left = Math.round((Math.random() * 150));
-          scope.sticky.top = $('#navbar-collapse').get(0).offsetHeight + 15 + Math.round((Math.random() * 150));
-          scope.sticky.text = 'Double Click to Edit';
-          scope.sticky.color = '#FFFF99';
-          scope.sticky.showButton = false;
-          scope.sticky.init = false;
-          socket.emit('createSticky', scope.sticky);
-        }
 
         element.draggable({
           stack: ".sticky",
           containment: [0, 55, 2000, 2000]
-        });
-
-        element.bind('dragstop', function(event, ui) {
-          var stickies = [];
-          var isMultipleSelect = false;
-          $('.ui-selected').each(function() {
-            isMultipleSelect = true;
-            stickies.push({id: this.id, top: $(this).offset().top, left: $(this).offset().left});
-            $(this).removeData('apos');
-          });
-          scope.sticky.left = ui.position.left;
-          scope.sticky.top = ui.position.top;
-          scope.$apply();
-          if (isMultipleSelect === false) {
-            stickies.push({id: scope.sticky.id, top: scope.sticky.top, left: scope.sticky.left});
-          }
-          socket.emit('moveSticky', stickies);
         });
 
         element.bind('dragstart', function(event, ui) {
@@ -56,7 +29,21 @@ angular.module('stickyApp')
           });
         });
 
-        function delaySetPositionForChrome(left, top) {
+        element.bind('dragstop', function(event, ui) {
+          var stickies = [];
+          var isSingleDrag = true;
+          $('.ui-selected').each(function() {
+            isSingleDrag = false;
+            stickies.push({id: this.id, top: $(this).offset().top, left: $(this).offset().left});
+            $(this).removeData('apos');
+          });
+          if (isSingleDrag === true) {
+            stickies.push({id: scope.sticky.id, top: ui.position.top, left: ui.position.left});
+          }
+          scope.setPositions(stickies);
+        });
+
+        function setPosition(left, top) {
           return function() {
             scope.sticky.left = left;
             scope.sticky.top = top;
@@ -70,7 +57,7 @@ angular.module('stickyApp')
               element.animate({
                 left: stickies[i].left,
                 top: stickies[i].top
-              }, 500, null, delaySetPositionForChrome(stickies[i].left, stickies[i].top));
+              }, 500, null, setPosition(stickies[i].left, stickies[i].top));
               break;
             }
           }
@@ -81,11 +68,16 @@ angular.module('stickyApp')
           $(this).wrapInner('<textarea class="content">' + text + '</textarea>').find('textarea').focus().select().blur(function() {
             $(this).parent().append($(this).children());
             $('textarea').remove();
-            scope.sticky.text = $(this).val();
-            scope.$apply();
-            socket.emit('editSticky', {'id': scope.sticky.id, 'text': scope.sticky.text});
+            scope.setText(scope.sticky, $(this).val());
           });
         });
-      }
+      },
+
+      template:
+          '<input type="image" class="sticky-remove" src="images/remove.png" ng-click="removeSticky(sticky)" ng-show="sticky.showButton" />' +
+          '<div class="content" ng-bind="sticky.text"></div>' +
+          '<input type="image" class="sticky-color-green" src="images/sticker-green.png" ng-click="changeColorGreen(sticky)" ng-show="sticky.showButton"/>' +
+          '<input type="image" class="sticky-color-yellow" src="images/sticker-yellow.png" ng-click="changeColorYellow(sticky)" ng-show="sticky.showButton"/>' +
+          '<input type="image" class="sticky-color-pink" src="images/sticker-pink.png" ng-click="changeColorPink(sticky)" ng-show="sticky.showButton"/>'
     };
   }]);
