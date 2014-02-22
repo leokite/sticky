@@ -1,5 +1,5 @@
 'use strict';
-angular.module('stickyApp')
+angular.module('StickyApp')
   .directive('stBoard', [function() {
     // jshint unused: vars
     return {
