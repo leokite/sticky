@@ -6,11 +6,11 @@ describe('Controller: StickyCtrl', function () {
   beforeEach(module('StickyApp'));
 
   beforeEach(inject(function($injector) {
-    socket = $injector.get('socketMock');
 
     var $controller = $injector.get('$controller');
     var $rootScope = $injector.get('$rootScope');
 
+    socket = $injector.get('socketMock');
     $scope = $rootScope.$new();
 
     createController = function() {
