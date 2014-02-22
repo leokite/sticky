@@ -1,28 +1,44 @@
 'use strict';
 
-describe('Controller: MainCtrl', function () {
+describe('Controller: StickyCtrl', function () {
+  var $scope, socket, createController;
 
-  // load the controller's module
-  beforeEach(module('stickyAngularApp'));
+  beforeEach(module('StickyApp'));
 
-  var MainCtrl,
-    scope,
-    $httpBackend;
+  beforeEach(inject(function($injector) {
 
-  // Initialize the controller and a mock scope
-  beforeEach(inject(function (_$httpBackend_, $controller, $rootScope) {
-    $httpBackend = _$httpBackend_;
-    $httpBackend.expectGET('/api/awesomeThings')
-      .respond(['HTML5 Boilerplate', 'AngularJS', 'Karma', 'Express']);
-    scope = $rootScope.$new();
-    MainCtrl = $controller('MainCtrl', {
-      $scope: scope
-    });
+    var $controller = $injector.get('$controller');
+    var $rootScope = $injector.get('$rootScope');
+
+    socket = $injector.get('socketMock');
+    $scope = $rootScope.$new();
+
+    createController = function() {
+      return $controller('StickyCtrl', {
+        '$scope': $scope,
+        'socket': socket
+      });
+    };
   }));
 
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(scope.awesomeThings).toBeUndefined();
-    $httpBackend.flush();
-    expect(scope.awesomeThings.length).toBe(4);
+
+  it('should emits and receives messages', function() {
+    var testReceived = false;
+
+    // jshint unused: vars
+    socket.on('test', function(data) {
+      testReceived = true;
+    });
+
+    socket.emit('test', {info: 'test'});
+    expect(testReceived).toBe(true);
   });
+
+  it('should change color', function() {
+    createController();
+    $scope.sticky = {'color': 'yellow', 'showButton': 'false'};
+    $scope.changeColor('green');
+    expect($scope.sticky.color).toBe('green');
+  });
+
 });

@@ -1,10 +1,9 @@
 'use strict';
-angular.module('stickyApp')
+angular.module('StickyApp')
   .directive('stSticky', ['socket', function(socket) {
     return {
       // jshint unused: vars
       link: function(scope, element, attrs) {
-
         element.draggable({
           stack: ".sticky",
           containment: [0, 55, 2000, 2000]
@@ -40,7 +39,10 @@ angular.module('stickyApp')
           if (isSingleDrag === true) {
             stickies.push({id: scope.sticky.id, top: ui.position.top, left: ui.position.left});
           }
-          scope.setPositions(stickies);
+          scope.sticky.left = ui.position.left;
+          scope.sticky.top = ui.position.top;
+          scope.$apply();
+          socket.emit('moveSticky', stickies);
         });
 
         function setPosition(left, top) {
@@ -65,19 +67,20 @@ angular.module('stickyApp')
 
         element.bind('dblclick', function() {
           var text = scope.sticky.text;
-          $(this).wrapInner('<textarea class="content">' + text + '</textarea>').find('textarea').focus().select().blur(function() {
+          $(this).wrapInner(
+            '<textarea id="text' + scope.sticky.id + '" class="content">' + text + '</textarea>').find('textarea').focus().select().blur(function() {
             $(this).parent().append($(this).children());
-            $('textarea').remove();
-            scope.setText(scope.sticky, $(this).val());
+            $('#text' + scope.sticky.id).remove();
+            scope.showButton = false; // for Firefox
+            scope.sticky.text = $(this).val();
+            scope.$apply();
+            socket.emit('editSticky', {
+              'id': scope.id,
+              'text': scope.text
+            });
           });
         });
-      },
 
-      template:
-          '<input type="image" class="sticky-remove" src="images/remove.png" ng-click="removeSticky(sticky)" ng-show="sticky.showButton" />' +
-          '<div class="content" ng-bind="sticky.text"></div>' +
-          '<input type="image" class="sticky-color-green" src="images/sticker-green.png" ng-click="changeColorGreen(sticky)" ng-show="sticky.showButton"/>' +
-          '<input type="image" class="sticky-color-yellow" src="images/sticker-yellow.png" ng-click="changeColorYellow(sticky)" ng-show="sticky.showButton"/>' +
-          '<input type="image" class="sticky-color-pink" src="images/sticker-pink.png" ng-click="changeColorPink(sticky)" ng-show="sticky.showButton"/>'
+      }
     };
   }]);
