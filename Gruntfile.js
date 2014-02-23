@@ -15,6 +15,8 @@ module.exports = function (grunt) {
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
 
+  // require('load-grunt-config')(grunt);
+
   // Define the configuration for all the tasks
   grunt.initConfig({
 
@@ -73,7 +75,7 @@ module.exports = function (grunt) {
           '{.tmp,<%= yeoman.app %>}/scripts/{,*//*}*.js',
           '<%= yeoman.app %>/images/{,*//*}*.{png,jpg,jpeg,gif,webp,svg}',
         ],
-      
+
         options: {
           livereload: true
         }
@@ -156,8 +158,8 @@ module.exports = function (grunt) {
         ignorePath: '<%= yeoman.app %>/'
       }
     },
-    
-    
+
+
 
     // Renames files for browser caching purposes
     rev: {
@@ -352,11 +354,43 @@ module.exports = function (grunt) {
     // Test settings
     karma: {
       unit: {
-        configFile: 'karma.conf.js',
+        configFile: 'test/karma.conf.js',
         singleRun: true
       }
+    },
+
+    // protracor: {
+      // options: {
+        // keepAlive: true,
+        // noColor: false
+      // },
+      // my_target: {
+        // options: {
+          // configFile: "test/conf.js"
+        // }
+      // }
+    // },
+
+    shell: {
+      options: {
+        stdout: true
+      },
+
+      selenium: {
+        command: "node_modules/protractor/bin/webdriver-manager start",
+        options: {
+          // async: true,
+          stdout: true
+        }
+      },
+
+      protractor_install: {
+        command: "node_modules/protractor/bin/webdriver-manager update"
+      }
     }
+
   });
+
 
   grunt.registerTask('express-keepalive', 'Keep grunt running', function() {
     this.async();
