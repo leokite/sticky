@@ -1,27 +1,37 @@
 <!doctype html>
 <html>
   <head lang="en">
-    <link rel="stylesheet" href="styles/main.css"/>
-    <link rel="stylesheet" href="bower_components/jquery-ui/themes/ui-lightness/jquery-ui.min.css"/>
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+    <!-- build:css(app) styles/vendor.css -->
+    <link rel="stylesheet" href="bower_components/jquery-ui/themes/ui-lightness/jquery-ui.css"/>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
+    <!-- endbuild -->
+    <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="styles/flat-ui.css"/>
-    <script src="bower_components/jquery/jquery.min.js"></script>
-    <script src="bower_components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="styles/main.css"/>
+    <!-- endbuild -->
+
+    <!-- build:js(app) scripts/vendor.js -->
+    <script src="bower_components/jquery/jquery.js"></script>
+    <script src="bower_components/jquery-ui/ui/jquery-ui.js"></script>
     <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/angular-animate/angular-animate.min.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="scripts/flat-ui/application.js"></script>
-    <script src="scripts/flat-ui/bootstrap-select.js"></script>
-    <script src="scripts/flat-ui/bootstrap-switch.js"></script>
-    <script src="scripts/flat-ui/jquery.placeholder.js"></script>
-    <script src="scripts/flat-ui/jquery.tagsinput.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <!-- endbuild -->
+
+        <!-- build:js({.tmp,app}) scripts/scripts.js -->
+        <script src="scripts/flat-ui/application.js"></script>
+        <script src="scripts/flat-ui/bootstrap-select.js"></script>
+        <script src="scripts/flat-ui/bootstrap-switch.js"></script>
+        <script src="scripts/flat-ui/jquery.placeholder.js"></script>
+        <script src="scripts/flat-ui/jquery.tagsinput.js"></script>
+        <script src="scripts/services/socket.js"></script>
+        <script src="scripts/services/util.js"></script>
+        <script src="scripts/controllers/stickiesCtrl.js"></script>
+        <script src="scripts/controllers/stickyCtrl.js"></script>
+        <script src="scripts/directives/stSticky.js"></script>
+        <script src="scripts/directives/stBoard.js"></script>
+        <!-- endbuild -->
     <script src="socket.io/socket.io.js"></script>
-    <script src="scripts/services/socket.js"></script>
-    <script src="scripts/services/util.js"></script>
-    <script src="scripts/controllers/stickiesCtrl.js"></script>
-    <script src="scripts/controllers/stickyCtrl.js"></script>
-    <script src="scripts/directives/stSticky.js"></script>
-    <script src="scripts/directives/stBoard.js"></script>
   </head>
   <body>
     <div ng-app="StickyApp" ng-controller="StickiesCtrl">
@@ -57,9 +67,9 @@
           <input type="image" class="sticky-color-yellow" src="images/sticker-yellow.png" ng-click="changeColor('yellowBackground')" ng-show="sticky.showButton"/>
           <input type="image" class="sticky-color-pink" src="images/sticker-pink.png" ng-click="changeColor('pinkBackground')" ng-show="sticky.showButton"/>
         </div>
-        <!-- debug info from -->
+        <!-- build:remove:dist -->
         <div style="position:absolute; bottom:0; font-size:15px;" ng-bind="stickies|json"></div>
-        <!-- debug info to -->
+        <!-- /build -->
       </div>
     </div>
   </body>

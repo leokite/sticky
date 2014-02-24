@@ -7,6 +7,7 @@
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
 
+/* jshint camelcase: false */
 module.exports = function (grunt) {
 
   // Load grunt tasks automatically
@@ -15,7 +16,7 @@ module.exports = function (grunt) {
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
 
-  // require('load-grunt-config')(grunt);
+  require('load-grunt-config')(grunt);
 
   // Define the configuration for all the tasks
   grunt.initConfig({
@@ -58,7 +59,7 @@ module.exports = function (grunt) {
         }
       },
       jsTest: {
-        files: ['test/spec/{,*/}*.js'],
+        files: ['test/scripts/**/*.js'],
         tasks: ['newer:jshint:test', 'karma']
       },
       styles: {
@@ -100,13 +101,14 @@ module.exports = function (grunt) {
         reporter: require('jshint-stylish')
       },
       all: [
-        '<%= yeoman.app %>/scripts/{,*/}*.js'
+        '<%= yeoman.app %>/scripts/{,*/}*.js',
+        '!<%= yeoman.app %>/scripts/flat-ui/*.js'
       ],
       test: {
         options: {
           jshintrc: 'test/.jshintrc'
         },
-        src: ['test/spec/{,*/}*.js']
+        src: ['test/scripts/**/*.js']
       }
     },
 
@@ -158,8 +160,6 @@ module.exports = function (grunt) {
         ignorePath: '<%= yeoman.app %>/'
       }
     },
-
-
 
     // Renames files for browser caching purposes
     rev: {
@@ -329,47 +329,59 @@ module.exports = function (grunt) {
     // minification. These next options are pre-configured if you do not wish
     // to use the Usemin blocks.
     // cssmin: {
-    //   dist: {
-    //     files: {
-    //       '<%= yeoman.dist %>/styles/main.css': [
-    //         '.tmp/styles/{,*/}*.css',
-    //         '<%= yeoman.app %>/styles/{,*/}*.css'
-    //       ]
-    //     }
-    //   }
+      // dist: {
+        // files: {
+          // '<%= yeoman.dist %>/styles/main.css': [
+            // '.tmp/styles/{,*/}*.css',
+            // '<%= yeoman.app %>/styles/{,*/}*.css'
+          // ]
+        // }
+      // }
     // },
     // uglify: {
-    //   dist: {
-    //     files: {
-    //       '<%= yeoman.dist %>/scripts/scripts.js': [
-    //         '<%= yeoman.dist %>/scripts/scripts.js'
-    //       ]
-    //     }
-    //   }
+      // dist: {
+        // files: {
+          // '<%= yeoman.dist %>/scripts/scripts.js': [
+            // '<%= yeoman.dist %>/scripts/scripts.js'
+          // ]
+        // }
+      // }
     // },
     // concat: {
-    //   dist: {}
+      // dist: {}
     // },
 
     // Test settings
     karma: {
       unit: {
-        configFile: 'test/karma.conf.js',
+        configFile: 'test/karma-unit.conf.js',
         singleRun: true
-      }
+      },
+      unit_auto: {
+        configFile: 'test/karma-unit.conf.js',
+        autoWatch: true
+      },
+      coverage: {
+        configFile: 'test/karma.conf.js',
+        preprocessors: {
+          'app/scripts/**/*.js': ['coverage']
+        },
+        reporters: ['progress', 'coverate'],
+        coverageReporter: {
+          type: 'html',
+          dir: 'test/coverage/',
+        },
+        singleRun: true
+      },
     },
 
-    // protracor: {
-      // options: {
-        // keepAlive: true,
-        // noColor: false
-      // },
-      // my_target: {
-        // options: {
-          // configFile: "test/conf.js"
-        // }
-      // }
-    // },
+    processhtml: {
+      dist: {
+        files: {
+          'views/index.html': ['views/index.html']
+        }
+      }
+    },
 
     shell: {
       options: {
@@ -386,11 +398,13 @@ module.exports = function (grunt) {
 
       protractor_install: {
         command: "node_modules/protractor/bin/webdriver-manager update"
-      }
+      },
+
+
+
     }
 
   });
-
 
   grunt.registerTask('express-keepalive', 'Keep grunt running', function() {
     this.async();
@@ -421,7 +435,7 @@ module.exports = function (grunt) {
     'clean:server',
     'concurrent:test',
     'autoprefixer',
-    'karma'
+    'karma:unit'
   ]);
 
   grunt.registerTask('build', [
@@ -431,6 +445,7 @@ module.exports = function (grunt) {
     'concurrent:dist',
     'autoprefixer',
     'concat',
+    'processhtml:dist',
     'ngmin',
     'copy:dist',
     'cdnify',

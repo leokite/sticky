@@ -59,7 +59,9 @@
     "grunt-shell": "~0.6.4",
     "grunt-shell-spawn": "~0.3.0",
     "matchdep": "~0.3.0",
-    "load-grunt-config": "~0.7.1"
+    "load-grunt-config": "~0.7.1",
+    "grunt-preprocess": "~4.0.0",
+    "grunt-processhtml": "~0.3.0"
   },
   "engines": {
     "node": ">=0.8.0"
