@@ -101,8 +101,7 @@ module.exports = function (grunt) {
         reporter: require('jshint-stylish')
       },
       all: [
-        '<%= yeoman.app %>/scripts/{,*/}*.js',
-        '!<%= yeoman.app %>/scripts/flat-ui/*.js'
+        '<%= yeoman.app %>/scripts/{,*/}*.js'
       ],
       test: {
         options: {
@@ -266,6 +265,7 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             '.htaccess',
             'bower_components/**/*',
+            'other_components/**/*',
             'images/{,*/}*.{webp}',
             'fonts/**/*'
           ]
@@ -361,12 +361,12 @@ module.exports = function (grunt) {
         configFile: 'test/karma-unit.conf.js',
         autoWatch: true
       },
-      coverage: {
-        configFile: 'test/karma.conf.js',
+      unit_coverage: {
+        configFile: 'test/karma-unit.conf.js',
         preprocessors: {
-          'app/scripts/**/*.js': ['coverage']
+          'app/scripts/{,*/}*.js': ['coverage']
         },
-        reporters: ['progress', 'coverate'],
+        reporters: ['progress', 'coverage'],
         coverageReporter: {
           type: 'html',
           dir: 'test/coverage/',
@@ -375,6 +375,7 @@ module.exports = function (grunt) {
       },
     },
 
+    // remove html elements for debug
     processhtml: {
       dist: {
         files: {
@@ -399,9 +400,6 @@ module.exports = function (grunt) {
       protractor_install: {
         command: "node_modules/protractor/bin/webdriver-manager update"
       },
-
-
-
     }
 
   });

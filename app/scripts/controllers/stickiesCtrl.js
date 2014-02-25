@@ -2,6 +2,7 @@
 angular.module('StickyApp', ['socket', 'util', 'ngAnimate'])
   .controller('StickiesCtrl', ['$scope', 'socket', 'util', function($scope, socket, util) {
     $scope.stickies = [];
+    var initialized = false;
 
     $scope.addSticky = function() {
       var sticky = {
@@ -46,6 +47,8 @@ angular.module('StickyApp', ['socket', 'util', 'ngAnimate'])
           {'id': stickies[i].id, 'left': stickies[i].left, 'top': stickies[i].top,
             'text': stickies[i].text, 'color': stickies[i].color, 'init': stickies[i].init});
       }
+      initialized = true;
+      unblockUI();
     });
 
     socket.on('addSticky', function(sticky) {
@@ -80,4 +83,34 @@ angular.module('StickyApp', ['socket', 'util', 'ngAnimate'])
         }
       }
     });
+
+    socket.on('disconnect', function() {
+      blockUI('Server disconnected. Refresh page to try and reconnect...');
+    });
+
+    $(function() {
+      if (initialized === false) {
+        blockUI('<img src="../images/gif-load.gif" width=43 height=11/>');
+      }
+
+    });
+
+    function blockUI(message) {
+      $.blockUI({
+        message: message,
+        css: {
+          border: 'none',
+          padding: '15px',
+          backgroundColor: '#000',
+          opacity: 0.5,
+          color: '#fff',
+          fontSize: '20px'
+        }
+      });
+    }
+
+    function unblockUI() {
+      $.unblockUI();
+    }
+
   }]);

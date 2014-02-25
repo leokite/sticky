@@ -26,7 +26,7 @@ module.exports = function() {
 
     // list of files / patterns to exclude
     exclude: [
-      'app/scripts/flat-ui/*.js',
+      'app/other_components/flat-ui/*.js',
       'app/scripts/services/socket.js'
     ],
 
