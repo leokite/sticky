@@ -5,16 +5,18 @@ angular.module('StickyApp', ['socket', 'util', 'ngAnimate'])
     var initialized = false;
 
     $scope.addSticky = function() {
-      var sticky = {
-        id: util.generateId('sticky'),
-        left: Math.round((Math.random() * 150)),
-        top: 40 + Math.round((Math.random() * 150)),
-        text: 'Double Click to Edit',
-        color: 'yellowBackground',
-        showButton: false
-      };
-      $scope.stickies.push(sticky);
-      socket.emit('addSticky', sticky);
+      if (initialized) {
+        var sticky = {
+          id: util.generateId('sticky'),
+          left: Math.round((Math.random() * 150)),
+          top: 40 + Math.round((Math.random() * 150)),
+          text: 'Double Click to Edit',
+          color: 'yellowBackground',
+          showButton: false
+        };
+        $scope.stickies.push(sticky);
+        socket.emit('addSticky', sticky);
+      }
     };
 
     $scope.removeSticky = function(sticky) {
@@ -24,12 +26,14 @@ angular.module('StickyApp', ['socket', 'util', 'ngAnimate'])
       socket.emit('removeSticky', id);
     };
 
-    $scope.bind = function() {
-      for (var i = $scope.stickies.length; i--; ) {
-        $scope.stickies[i].left = 200;
-        $scope.stickies[i].top = 200;
+    $scope.bundle = function() {
+      if (initialized) {
+        for (var i = $scope.stickies.length; i--; ) {
+          $scope.stickies[i].left = 200;
+          $scope.stickies[i].top = 200;
+        }
+        socket.emit('moveSticky', $scope.stickies);
       }
-      socket.emit('moveSticky', $scope.stickies);
     };
 
     socket.on('connect', function() {
@@ -85,14 +89,14 @@ angular.module('StickyApp', ['socket', 'util', 'ngAnimate'])
     });
 
     socket.on('disconnect', function() {
-      blockUI('Server disconnected. Refresh page to try and reconnect...');
+      initialized = false;
+      blockUI('Server disconnected. Refresh page to reconnect...');
     });
 
     $(function() {
       if (initialized === false) {
-        blockUI('<img src="../images/gif-load.gif" width=43 height=11/>');
+        blockUI('<img src="../images/loader.gif" width=36px height=36px/>');
       }
-
     });
 
     function blockUI(message) {
@@ -101,10 +105,8 @@ angular.module('StickyApp', ['socket', 'util', 'ngAnimate'])
         css: {
           border: 'none',
           padding: '15px',
-          backgroundColor: '#000',
-          opacity: 0.5,
-          color: '#fff',
-          fontSize: '20px'
+          backgroundColor: '#ecf0f1',
+          color: '#1abc9c'
         }
       });
     }
