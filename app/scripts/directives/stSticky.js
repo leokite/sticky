@@ -80,7 +80,6 @@ angular.module('StickyApp')
             });
           });
         });
-
       }
     };
   }]);

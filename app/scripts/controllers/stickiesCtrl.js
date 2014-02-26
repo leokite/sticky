@@ -2,18 +2,21 @@
 angular.module('StickyApp', ['socket', 'util', 'ngAnimate'])
   .controller('StickiesCtrl', ['$scope', 'socket', 'util', function($scope, socket, util) {
     $scope.stickies = [];
+    var initialized = false;
 
     $scope.addSticky = function() {
-      var sticky = {
-        id: util.generateId('sticky'),
-        left: Math.round((Math.random() * 150)),
-        top: 40 + Math.round((Math.random() * 150)),
-        text: 'Double Click to Edit',
-        color: 'yellowBackground',
-        showButton: false
-      };
-      $scope.stickies.push(sticky);
-      socket.emit('addSticky', sticky);
+      if (initialized) {
+        var sticky = {
+          id: util.generateId('sticky'),
+          left: Math.round((Math.random() * 150)),
+          top: 40 + Math.round((Math.random() * 150)),
+          text: 'Double Click to Edit',
+          color: 'yellowBackground',
+          showButton: false
+        };
+        $scope.stickies.push(sticky);
+        socket.emit('addSticky', sticky);
+      }
     };
 
     $scope.removeSticky = function(sticky) {
@@ -23,12 +26,14 @@ angular.module('StickyApp', ['socket', 'util', 'ngAnimate'])
       socket.emit('removeSticky', id);
     };
 
-    $scope.bind = function() {
-      for (var i = $scope.stickies.length; i--; ) {
-        $scope.stickies[i].left = 200;
-        $scope.stickies[i].top = 200;
+    $scope.bundle = function() {
+      if (initialized) {
+        for (var i = $scope.stickies.length; i--; ) {
+          $scope.stickies[i].left = 200;
+          $scope.stickies[i].top = 200;
+        }
+        socket.emit('moveSticky', $scope.stickies);
       }
-      socket.emit('moveSticky', $scope.stickies);
     };
 
     socket.on('connect', function() {
@@ -46,6 +51,8 @@ angular.module('StickyApp', ['socket', 'util', 'ngAnimate'])
           {'id': stickies[i].id, 'left': stickies[i].left, 'top': stickies[i].top,
             'text': stickies[i].text, 'color': stickies[i].color, 'init': stickies[i].init});
       }
+      initialized = true;
+      unblockUI();
     });
 
     socket.on('addSticky', function(sticky) {
@@ -80,4 +87,32 @@ angular.module('StickyApp', ['socket', 'util', 'ngAnimate'])
         }
       }
     });
+
+    socket.on('disconnect', function() {
+      initialized = false;
+      blockUI('Server disconnected. Refresh page to reconnect...');
+    });
+
+    $(function() {
+      if (initialized === false) {
+        blockUI('<img src="../images/loader.gif" width=36px height=36px/>');
+      }
+    });
+
+    function blockUI(message) {
+      $.blockUI({
+        message: message,
+        css: {
+          border: 'none',
+          padding: '15px',
+          backgroundColor: '#ecf0f1',
+          color: '#1abc9c'
+        }
+      });
+    }
+
+    function unblockUI() {
+      $.unblockUI();
+    }
+
   }]);

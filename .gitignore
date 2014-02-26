@@ -1,5 +1,6 @@
 node_modules
 public
+views
 .tmp
 .sass-cache
 app/bower_components
@@ -8,3 +9,4 @@ heroku
 tags
 dump.rdb
 data
+test/coverage

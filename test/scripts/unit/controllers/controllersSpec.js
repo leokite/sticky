@@ -21,7 +21,6 @@ describe('Controller: StickyCtrl', function () {
     };
   }));
 
-
   it('should emits and receives messages', function() {
     var testReceived = false;
 

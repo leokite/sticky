@@ -7,6 +7,7 @@
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
 
+/* jshint camelcase: false */
 module.exports = function (grunt) {
 
   // Load grunt tasks automatically
@@ -14,6 +15,8 @@ module.exports = function (grunt) {
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
+
+  require('load-grunt-config')(grunt);
 
   // Define the configuration for all the tasks
   grunt.initConfig({
@@ -56,7 +59,7 @@ module.exports = function (grunt) {
         }
       },
       jsTest: {
-        files: ['test/spec/{,*/}*.js'],
+        files: ['test/scripts/**/*.js'],
         tasks: ['newer:jshint:test', 'karma']
       },
       styles: {
@@ -73,7 +76,7 @@ module.exports = function (grunt) {
           '{.tmp,<%= yeoman.app %>}/scripts/{,*//*}*.js',
           '<%= yeoman.app %>/images/{,*//*}*.{png,jpg,jpeg,gif,webp,svg}',
         ],
-      
+
         options: {
           livereload: true
         }
@@ -104,7 +107,7 @@ module.exports = function (grunt) {
         options: {
           jshintrc: 'test/.jshintrc'
         },
-        src: ['test/spec/{,*/}*.js']
+        src: ['test/scripts/**/*.js']
       }
     },
 
@@ -156,8 +159,6 @@ module.exports = function (grunt) {
         ignorePath: '<%= yeoman.app %>/'
       }
     },
-    
-    
 
     // Renames files for browser caching purposes
     rev: {
@@ -264,6 +265,7 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             '.htaccess',
             'bower_components/**/*',
+            'other_components/**/*',
             'images/{,*/}*.{webp}',
             'fonts/**/*'
           ]
@@ -327,35 +329,79 @@ module.exports = function (grunt) {
     // minification. These next options are pre-configured if you do not wish
     // to use the Usemin blocks.
     // cssmin: {
-    //   dist: {
-    //     files: {
-    //       '<%= yeoman.dist %>/styles/main.css': [
-    //         '.tmp/styles/{,*/}*.css',
-    //         '<%= yeoman.app %>/styles/{,*/}*.css'
-    //       ]
-    //     }
-    //   }
+      // dist: {
+        // files: {
+          // '<%= yeoman.dist %>/styles/main.css': [
+            // '.tmp/styles/{,*/}*.css',
+            // '<%= yeoman.app %>/styles/{,*/}*.css'
+          // ]
+        // }
+      // }
     // },
     // uglify: {
-    //   dist: {
-    //     files: {
-    //       '<%= yeoman.dist %>/scripts/scripts.js': [
-    //         '<%= yeoman.dist %>/scripts/scripts.js'
-    //       ]
-    //     }
-    //   }
+      // dist: {
+        // files: {
+          // '<%= yeoman.dist %>/scripts/scripts.js': [
+            // '<%= yeoman.dist %>/scripts/scripts.js'
+          // ]
+        // }
+      // }
     // },
     // concat: {
-    //   dist: {}
+      // dist: {}
     // },
 
     // Test settings
     karma: {
       unit: {
-        configFile: 'karma.conf.js',
+        configFile: 'test/karma-unit.conf.js',
         singleRun: true
+      },
+      unit_auto: {
+        configFile: 'test/karma-unit.conf.js',
+        autoWatch: true
+      },
+      unit_coverage: {
+        configFile: 'test/karma-unit.conf.js',
+        preprocessors: {
+          'app/scripts/{,*/}*.js': ['coverage']
+        },
+        reporters: ['progress', 'coverage'],
+        coverageReporter: {
+          type: 'html',
+          dir: 'test/coverage/',
+        },
+        singleRun: true
+      },
+    },
+
+    // remove html elements for debug
+    processhtml: {
+      dist: {
+        files: {
+          'views/index.html': ['views/index.html']
+        }
       }
+    },
+
+    shell: {
+      options: {
+        stdout: true
+      },
+
+      selenium: {
+        command: "node_modules/protractor/bin/webdriver-manager start",
+        options: {
+          // async: true,
+          stdout: true
+        }
+      },
+
+      protractor_install: {
+        command: "node_modules/protractor/bin/webdriver-manager update"
+      },
     }
+
   });
 
   grunt.registerTask('express-keepalive', 'Keep grunt running', function() {
@@ -387,7 +433,7 @@ module.exports = function (grunt) {
     'clean:server',
     'concurrent:test',
     'autoprefixer',
-    'karma'
+    'karma:unit'
   ]);
 
   grunt.registerTask('build', [
@@ -397,6 +443,7 @@ module.exports = function (grunt) {
     'concurrent:dist',
     'autoprefixer',
     'concat',
+    'processhtml:dist',
     'ngmin',
     'copy:dist',
     'cdnify',

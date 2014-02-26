@@ -1,11 +1,9 @@
-// Karma configuration
-// http://karma-runner.github.io/0.10/config/configuration-file.html
 'use strict';
 
-module.exports = function(config) {
-  config.set({
+module.exports = function() {
+  return {
     // base path, that will be used to resolve files and exclude
-    basePath: '',
+    basePath: '../',
 
     // testing framework to use (jasmine/mocha/qunit/...)
     frameworks: ['jasmine'],
@@ -22,25 +20,18 @@ module.exports = function(config) {
       'app/bower_components/angular-cookies/angular-cookies.js',
       'app/bower_components/angular-sanitize/angular-sanitize.js',
       'app/bower_components/angular-route/angular-route.js',
-      'test/mock/*.js',
-      'app/scripts/*.js',
       'app/scripts/**/*.js',
-      'test/spec/**/*.js'
+      'test/lib/**/*.js'
     ],
 
     // list of files / patterns to exclude
     exclude: [
-      'app/scripts/flat-ui/*.js',
+      'app/other_components/flat-ui/*.js',
       'app/scripts/services/socket.js'
     ],
 
     // web server port
     port: 8080,
-
-    // level of logging
-    // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
-    logLevel: config.LOG_INFO,
-
 
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: false,
@@ -54,21 +45,25 @@ module.exports = function(config) {
     // - Safari (only Mac)
     // - PhantomJS
     // - IE (only Windows)
-    browsers: ['PhantomJS'],
+    browsers: ['Chrome'],
 
-    preprocessors: {
-      'app/scripts/**/*.js': ['coverage']
-    },
+    // preprocessors: {
+      // 'app/scripts/**/*.js': ['coverage']
+    // },
 
-    reporters: ['progress', 'coverage'],
+    // test results reporter to use
+    // possible values:'dots', 'progress', 'junit', 'growl', 'coverate'
+    reporters: ['progress'],
 
-    coverageReporter: {
-      type: 'html',
-      dir: 'coverage/',
-    },
+    // coverageReporter: {
+      // type: 'html',
+      // dir: 'test/coverage/',
+    // },
 
     // Continuous Integration mode
     // if true, it capture browsers, run tests and exit
-    singleRun: false
-  });
+    singleRun: false,
+
+    colors: true
+  };
 };
