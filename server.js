@@ -16,7 +16,11 @@ require('./lib/config/io')(io);
 var index = require('./lib/controllers/index');
 
 // Server Routes
-app.get('/*', index.index);
+app.get('(/|/[^/]+$)', index.main);
+app.get('/*', function(req, res) {
+          res.render('404');
+        });
+
 // Start server
 var port = process.env.PORT || 3000;
 server = server.listen(port, function() {

@@ -1,6 +1,6 @@
 {
-  "name": "stickyangular",
-  "version": "0.0.0",
+  "name": "Sticky",
+  "version": "0.1.0",
   "dependencies": {
     "express": "~3.4.3",
     "ejs": "~0.8.4",
@@ -62,6 +62,11 @@
     "load-grunt-config": "~0.7.1",
     "grunt-processhtml": "~0.3.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/leokite/Sticky.git"
+  },
+  "main": "server",
   "engines": {
     "node": ">=0.8.0"
   },
