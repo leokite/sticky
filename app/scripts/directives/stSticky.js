@@ -75,8 +75,8 @@ angular.module('StickyApp')
             scope.sticky.text = $(this).val();
             scope.$apply();
             socket.emit('editSticky', {
-              'id': scope.id,
-              'text': scope.text
+              id: scope.sticky.id,
+              text: scope.sticky.text
             });
           });
         });
