@@ -268,7 +268,7 @@ module.exports = function (grunt) {
             'other_components/**/*',
             'images/{,*/}*.{webp}',
             'fonts/**/*',
-            'cache.manifest'
+            'manifest.appcache'
           ]
         }, {
           expand: true,
@@ -385,6 +385,22 @@ module.exports = function (grunt) {
       }
     },
 
+    manifest: {
+      generate: {
+        options: {
+          basePath: '<%= yeoman.app %>',
+          network: ['*'],
+          preferOnline: true,
+          verbose: true,
+          timestamp: true,
+          hash: true,
+          master: ['index.html']
+        },
+        src: ['images/*'],
+        dest: '<%= yeoman.app %>/manifest.appcache'
+      }
+    },
+
     shell: {
       options: {
         stdout: true
@@ -446,6 +462,7 @@ module.exports = function (grunt) {
     'concat',
     'processhtml:dist',
     'ngmin',
+    'manifest',
     'copy:dist',
     'cdnify',
     'cssmin',
