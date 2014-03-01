@@ -45,7 +45,7 @@ module.exports = function() {
     // - Safari (only Mac)
     // - PhantomJS
     // - IE (only Windows)
-    browsers: ['Firefox'],
+    browsers: ['PhantomJS'],
 
     // preprocessors: {
       // 'app/scripts/**/*.js': ['coverage']
