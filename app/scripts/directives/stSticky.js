@@ -71,7 +71,7 @@ angular.module('StickyApp')
             '<textarea id="text' + scope.sticky.id + '" class="content">' + text + '</textarea>').find('textarea').focus().select().blur(function() {
             $(this).parent().append($(this).children());
             $('#text' + scope.sticky.id).remove();
-            scope.showButton = false; // for Firefox
+            scope.sticky.showButton = false; // for Firefox
             scope.sticky.text = $(this).val();
             scope.$apply();
             socket.emit('editSticky', {
