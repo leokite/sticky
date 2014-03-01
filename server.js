@@ -16,6 +16,10 @@ require('./lib/config/io')(io);
 var index = require('./lib/controllers/index');
 
 // Server Routes
+app.get('/cache.manifest', function(req, res) {
+  res.header('Content-Type', 'text/cache-manifest');
+  res.end('CACHE MANIFEST');
+});
 app.get('(/|/[^/]+$)', index.main);
 app.get('/*', function(req, res) {
           res.render('404');

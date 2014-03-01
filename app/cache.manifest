@@ -1,0 +1,11 @@
+CACHE MANIFEST
+# 2014-02-28:v1
+
+NETWORK:
+*
+
+CACHE:
+images/remove.png
+images/sticker-green.png
+images/sticker-pink.png
+images/sticker-yellow.png
