@@ -95,8 +95,8 @@ angular.module('StickyApp', ['socket', 'util', 'ngAnimate'])
 
     $(function() {
       if (initialized === false) {
-        blockUI('Please wait...');
-        // blockUI('<img src="../images/loader.gif" width=36px height=36px/>');
+        // blockUI('Please wait...');
+        blockUI('<img src="../images/loader.gif" width="36px" height="36px"/>');
       }
     });
 

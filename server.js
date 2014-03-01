@@ -16,7 +16,7 @@ require('./lib/config/io')(io);
 var index = require('./lib/controllers/index');
 
 // Server Routes
-app.get('/cache.manifest', function(req, res) {
+app.get('/manifest.appcache', function(req, res) {
   res.header('Content-Type', 'text/cache-manifest');
   res.end('CACHE MANIFEST');
 });
