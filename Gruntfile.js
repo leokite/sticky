@@ -29,25 +29,27 @@ module.exports = function (grunt) {
       views: 'views'
     },
     express: {
-      options: {
-        port: process.env.PORT || 9000
-      },
       dev: {
         options: {
+          port: process.env.PORT || 9001,
           script: 'server.js',
           debug: true
         }
       },
       prod: {
         options: {
+          port: process.env.PORT || 9000,
           script: 'server.js',
           node_env: 'production'
         }
       }
     },
     open: {
-      server: {
-        url: 'http://localhost:<%= express.options.port %>'
+      dev: {
+        path: 'http://localhost:<%= express.dev.options.port %>'
+      },
+      prod: {
+        path: 'http://localhost:<%= express.prod.options.port %>'
       }
     },
     watch: {
@@ -427,7 +429,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('serve', function (target) {
     if (target === 'dist') {
-      return grunt.task.run(['build', 'express:prod', 'open', 'express-keepalive']);
+      return grunt.task.run(['build', 'express:prod', 'open:prod', 'express-keepalive']);
     }
 
     grunt.task.run([
@@ -436,7 +438,7 @@ module.exports = function (grunt) {
       'concurrent:server',
       'autoprefixer',
       'express:dev',
-      'open',
+      'open:dev',
       'watch'
     ]);
   });
