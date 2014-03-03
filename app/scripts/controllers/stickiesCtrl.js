@@ -46,6 +46,7 @@ angular.module('StickyApp', ['socket', 'util', 'ngAnimate'])
     });
 
     socket.on('initSticky', function(stickies) {
+      $scope.stickies = [];
       for (var i in stickies) {
         $scope.stickies.push(
           {'id': stickies[i].id, 'left': stickies[i].left, 'top': stickies[i].top,

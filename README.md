@@ -1,10 +1,11 @@
 Sticky
-======
-
+---------------
 [![Build Status](https://secure.travis-ci.org/leokite/sticky.png)](https://github.com/leokite/sticky)
 
-Sticky is a web-based brain storming tool that allows you to collaborate with your friends in real-time.
-Sticky is also developped to evaluate technorogy.
+Sticky is a web-based brain storming tool that allows you to collaborate with co-workers in real-time.
+Sticky is also developped to study and evaluate technorogy such as HTML5, CSS3, Node.js, Socket.io AngularJS, Redis and MongoDB.
+
+[Demo](http://calm-peak-5106.herokuapp.com/demo)
 
 Getting Started
 ---------------
@@ -12,3 +13,8 @@ Getting Started
     $ cd sticky
     $ npm install
     $ grunt serve
+    $ open http://localhost:9000/anyRoomName
+
+License
+--------------
+MIT
