@@ -8,8 +8,8 @@ angular.module('StickyApp', ['socket', 'util', 'ngAnimate'])
       if (initialized) {
         var sticky = {
           id: util.generateId('sticky'),
-          left: Math.round((Math.random() * 150)),
-          top: 40 + Math.round((Math.random() * 150)),
+          left: Math.round(Math.random() * 150),
+          top: 40 + Math.round(Math.random() * 150),
           text: 'Double Click to Edit',
           color: 'yellowBackground',
           showButton: false
@@ -36,8 +36,8 @@ angular.module('StickyApp', ['socket', 'util', 'ngAnimate'])
     $scope.bundle = function() {
       if (initialized) {
         for (var i = $scope.stickies.length; i--; ) {
-          $scope.stickies[i].left = 200;
-          $scope.stickies[i].top = 200;
+          $scope.stickies[i].left = 200 + Math.round(Math.random() * 15);
+          $scope.stickies[i].top = 200 + Math.round(Math.random() * 15);
         }
         socket.emit('moveSticky', $scope.stickies);
       }
