@@ -62,7 +62,8 @@
     "matchdep": "~0.3.0",
     "load-grunt-config": "~0.7.1",
     "grunt-processhtml": "~0.3.0",
-    "grunt-manifest": "~0.4.0"
+    "grunt-manifest": "~0.4.0",
+    "ng-midway-tester": "~2.0.5"
   },
   "repository": {
     "type": "git",

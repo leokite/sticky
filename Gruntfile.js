@@ -375,7 +375,7 @@ module.exports = function (grunt) {
           dir: 'test/coverage/',
         },
         singleRun: true
-      },
+      }
     },
 
     // remove html elements for debug
@@ -419,6 +419,21 @@ module.exports = function (grunt) {
       protractor_install: {
         command: "node_modules/protractor/bin/webdriver-manager update"
       },
+    },
+
+    protractor: {
+      options: {
+        keepAlive: true, // If false, the grunt process stops when the test fails.
+        noColor: false, // If true, protractor will not use colors in its output.
+        args: {
+          // Arguments passed to the command
+        }
+      },
+      run: {
+        options: {
+          configFile: "test/protractor.conf.js"
+        }
+      }
     }
 
   });
