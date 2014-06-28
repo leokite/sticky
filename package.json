@@ -50,7 +50,7 @@
     "karma-requirejs": "~0.2.1",
     "karma-phantomjs-launcher": "~0.1.1",
     "karma-ng-html2js-preprocessor": "~0.1.0",
-    "grunt-karma": "0.6.2",
+    "grunt-karma": "0.7.1",
     "karma-coverage": "~0.2.0",
     "karma-mocha": "~0.1.1",
     "mocha": "~1.17.1",
