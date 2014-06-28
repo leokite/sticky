@@ -93,7 +93,7 @@
   background-color: #FFCCFF;
 }
 
-.greenBackground, .yellowBackground-add, .pinkBackground-add {
+.greenBackground-add, .yellowBackground-add, .pinkBackground-add {
   -webkit-transition: background-color 1s ease-out;
      -moz-transition: background-color 1s ease-out;
        -o-transition: background-color 1s ease-out;
