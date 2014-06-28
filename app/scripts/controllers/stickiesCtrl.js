@@ -4,12 +4,12 @@ angular.module('StickyApp', ['socket', 'util', 'ngAnimate'])
     $scope.stickies = [];
     var initialized = false;
 
-    $scope.add = function() {
+    $scope.add = function(location) {
       if (initialized) {
         var sticky = {
           id: util.generateId('sticky'),
-          left: Math.round(Math.random() * 150),
-          top: 40 + Math.round(Math.random() * 150),
+          left: $(location).offset().left + 10 + Math.round(Math.random() * 100),
+          top: $(location).offset().top + 50 + Math.round(Math.random() * 100),
           text: 'Double Click to Edit',
           color: 'yellowBackground',
           showButton: false

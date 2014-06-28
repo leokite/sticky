@@ -6,7 +6,7 @@ angular.module('StickyApp')
       link: function(scope, element, attrs) {
         element.draggable({
           stack: ".sticky",
-          containment: [0, 55, 2000, 2000]
+          containment: [0, 55, 5000, 5000]
         });
 
         element.bind('dragstart', function(event, ui) {
