@@ -3,7 +3,7 @@ Sticky
 [![Build Status](https://secure.travis-ci.org/leokite/sticky.png)](https://github.com/leokite/sticky)
 
 Sticky is a web-based brain storming tool that allows you to collaborate with co-workers in real-time.
-Sticky is also developped to study and evaluate technorogy such as HTML5, CSS3, Node.js, Socket.io, AngularJS, Redis and MongoDB.
+Sticky is also developed to study and evaluate technologies such as HTML5, CSS3, Node.js, Socket.io, AngularJS, Redis and MongoDB.
 
 [Demo](http://calm-peak-5106.herokuapp.com/demo)
 
